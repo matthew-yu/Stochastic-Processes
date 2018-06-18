@@ -1,0 +1,156 @@
+---
+title: "Stochastic Processes Assignment 10"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/12/30"
+output: pdf_document
+---
+
+
+##1. Problem 6.2
+Suppose that a one-celled organism can be in one of two states -- either $A$ or $B$. An individual in state $A$ will change to state $B$ at an exponential rate $\alpha$; an individual in state $B$ divides into two new individuals of type $A$ at an exponential rate $\beta$. Define an appropriate continuous-time Markov chain for a population of such organisms and determine the appropriate parameters for this model.\
+\
+Together the number of organisms in state $A$ and $B$ is a CTMC.\
+The population of the organisms can be written as
+$$v_{\{r,s\}}=\alpha\times r+\beta\times s$$
+where $(r,s)$ are the current occurence of state $A$ and $B$, respectively.\
+We also have information of the transition
+$$P_{\{r,s\};\{r-1,s+1\}}=\frac{\alpha r}{\alpha r+\beta s}$$
+and
+$$P_{\{r,s\};\{r+2,s-1\}}=\frac{\beta s}{\alpha r+\beta s}$$
+
+
+
+##1. Problem 6.3
+Consider two machines that are maintained by a single repairman. Machine $i$ functions for an exponential time with rate $\mu_i$ before breaking down, $i=1,2$. The repair times (for either machine) are exponential with rate $\mu$. Can we analyze this as a birth and death process? If so, what are the parameters? If not, how can we analyze it?\
+\
+Comparing to a typical birth and death process, the departure of the system lies in question. Reason being that in this case, not only should we know how many departure is happening at once, but also "which" of the member is departing.\
+Thus we cannot model this as a birth and death problem.\
+Instead, we define the following notations.
+$$\begin{aligned}
+b_{00}&: \text{Non of the machine broke down}\\
+b_{10}&: \text{machine 1 is down, 2 is working}\\
+b_{01}&: \text{machine 2 is down, 1 is working}\\
+r_1&:\text{both machines are down, 1 is currently being repaired}\\
+r_2&:\text{both machines are down, 2 is currently being repaired}\\
+\end{aligned}$$
+
+Then, we have\
+$v_{b_{00}}=\mu_1+\mu_2,\ v_{b_{10}}=\mu+\mu_2,\  v_{b_{01}}=\mu+\mu_1,\  v_{r_1}=\mu,\ v_{r_2}=\mu$
+$$\begin{aligned}
+P_{b_{00},b_{10}}&=\frac{\mu_1}{\mu_1+\mu_2}\\
+P_{b_{00},b_{01}}&=\frac{\mu_2}{\mu_1+\mu_2}\\
+P_{b_{10},b_{00}}&=\frac{\mu}{\mu+\mu_2}\\
+P_{b_{10},r_1}&=\frac{\mu_2}{\mu+\mu_2}\\
+P_{b_{01},b_{00}}&=\frac{\mu}{\mu+\mu_1}\\
+P_{b_{01},r_2}&=\frac{\mu_1}{\mu+\mu_1}\\
+P_{r_1,b_{01}}&=1\\
+P_{r_2,b_{10}}&=1
+\end{aligned}$$
+
+
+
+##1. Problem 6.4
+Potential customers arrive at a single-server station in accordance with a Poisson process with rate $\lambda$. However, if the arrival finds $n$ customers already in the station, then he will enter the system with probability $\alpha_n$. Assuming an exponential service rate $\mu$, set this up as a birth and death process and determine the birth and death rates.\
+\
+Let $X(t)$ denote the population size of the station at time $t$.\
+$\{X(t):t\geq 0\}$ with $S=\{0,1,2,\dots\}$ is then a birth and death process where arrival rate $\lambda_n=\lambda_{\alpha_n}$ and departure rate $\mu_n=\mu$.
+
+
+
+##1. Problem 6.8
+Consider two machines, both of which have an exponential lifetime with mean $\frac{1}{\lambda}$. There is a single repairman that can service machines at an exponential rate $\mu$. Set up the Kolmogorov backward equations; you need not solve them.\
+\
+By modeling the number of machines that are broken as a birth and death process, we have
+$$\begin{aligned} 
+q_{0,1}=2\lambda\ &\ q_{0,2}=0\\
+q_{1,0}=\mu\ &\ q_{1,2}=\lambda\\
+q_{2,0}=0\ &\ q_{2,1}=\mu
+\end{aligned}$$
+
+Thus $v_0=2\lambda,\ v_1=\lambda+\mu,\ v_2=\mu$\
+While$P_{i,j}=\sum\limits_{k\neq i}q_{i,k}P_{k,j}-v_iP_{i,j}$
+$$\begin{aligned}
+P_{0,j}&=2\lambda P_{1,j}-2\lambda P_{0,j}\\
+P_{1,j}&=\mu P_{0,j}+\lambda P_{2,j}-(\lambda+\mu)P_{1,j}\\
+P_{2,j}&=\mu P_{1,j}-\mu P_{2,j},\ \ \ \ \text{j=0,1,2}
+\end{aligned}$$
+
+
+
+
+##1. Problem 6.13
+A small barbershop, operated by a single barber, has room for at most two customers. Potential customers arrive at a Poisson rate of three per hour, and the successive service times are independent exponential random variables with mean $\frac{1}{4}$ hour.\
+
+
+###(a) What is the average number of customers in the shop?
+The number of customers in shop is a birth and death process with
+$$\lambda_0=\lambda_1=3\ \text{and}\ \mu_1=\mu_2=4$$
+Then, 
+$$\left\{\begin{array}{lll}
+P_1=\frac{3}{4}P_0\\
+P_2=\frac{3}{4}P_1\\
+P_0+P_1+P_2=1
+\end{array}\right.$$
+By solving the equations, $P_0=\frac{16}{37},\ P_1=\frac{12}{37},\ P_2=\frac{9}{37}$\
+\
+The average number of customers is $P_1+2P_2=\frac{30}{37}$
+
+
+###(b) What is the proportion of potential customers that enter the shop?
+\
+$\frac{\lambda(1-P_2)}{\lambda}=1-P_2=\frac{28}{37}$
+
+
+###(c) If the barber could work twice as fast, how much more business would he do?
+if $\mu=8$,
+$$\left\{\begin{array}{lll}
+P_1=\frac{3}{8}P_0\\
+P_2=\frac{3}{8}P_1\\
+P_0+P_1+P_2=1
+\end{array}\right.$$
+By solving the equations, $P_0=\frac{64}{97},\ P_1=\frac{24}{37},\ P_2=\frac{9}{97}$\
+According to (b), now the proportion of potential customers that enter is $1-P_2=\frac{88}{97}$
+
+By multiplying $\lambda$, the number of businesses goes from $\frac{84}{37}$ to now $\frac{264}{97}$.
+
+
+
+##1. Problem 6.20
+There are two machines, one of which is used as a spare. A working machine
+will function for an exponential time with rate $\lambda$ and will then fail. Upon failure, it is immediately replaced by the other machine if that one is in working order, and it goes to the repair facility. The repair facility consists of a single person who takes an exponential time with rate $\mu$ to repair a failed machine. At the repair facility, the newly failed machine enters service if the repairperson is free. If the repairperson is busy, it waits until the other machine is fixed; at that time, the newly repaired machine is put in service and repair begins on the other one. Starting with both machines in working condition, find
+
+
+
+###(a) the expected value of the time until both are in the repair facility.
+
+
+The number of failed machines is a birth and death process with arrival rate $\lambda_0=\lambda_1=\lambda$ and departure rate $\mu_1=\mu_2=\mu$.\
+Applying the result from page 364 in the textbook, the expected time from 0 to 2 is
+$$E[T_0]+E[T_1]=\frac{1}{\lambda}+(\frac{1}{\lambda}+\frac{\mu}{\lambda}\times\frac{1}{\lambda})=\frac{2}{\lambda}+\frac{\mu}{\lambda^2}$$
+
+###(c) In the long run, what proportion of time is there a working machine?
+
+
+
+##1. Problem 6.23
+A job shop consists of three machines and two repairmen. The amount of time a machine works before breaking down is exponentially distributed with mean 10. If the amount of time it takes a single repairman to fix a machine is exponentially distributed with mean 8, then\
+
+
+###(a) what is the average number of machines not in use?
+
+The number of broken machines is a birth and death process with $\lambda_0=\frac{3}{10},\ \lambda_1=\frac{2}{10},\ \lambda_2=\frac{1}{10}$, arrival rate is 0 otherwise; $\mu_1=\frac{1}{8},\ \mu_2=\frac{2}{8},\ \mu_3=\frac{2}{8}$.\
+
+$$\left\{\begin{array}{llll}
+P_1=\frac{12}{5}P_0\\
+P_2=\frac{4}{5}P_1\\
+P_3=\frac{2}{5}P_2\\
+P_0+P_1+P_2+P_3=1
+\end{array}\right.$$
+By solving the equations, $P_0=\frac{125}{761},\ P_1=\frac{300}{761},\ P_2=\frac{240}{761},\ P_3=\frac{96}{761}$\
+
+The average idled number is $P_1+2P_2+3P_3=\frac{1068}{761}$
+
+
+###(b) what proportion of time are both repairmen busy?
+
+The Proportion of time where both repairmen are busy is $P_2+P_3=\frac{336}{761}$

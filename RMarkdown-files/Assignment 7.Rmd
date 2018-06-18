@@ -1,0 +1,88 @@
+---
+title: "Stochastic Processes Assignment 7"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/11/5"
+output: pdf_document
+---
+
+
+##1. Problem 5.49
+Events occur according to a Poisson process with rate $\lambda$.Each time an event occurs, we must decide whether or not to stop, with our objective being to stop at the last event to occur prior to some specified time $T$, where $T>\frac{1}{\lambda}$. That is, if an event occurs at time $t,\ 0\leq t \leq T$, and we decide to stop, then we win if there are no additional events by time $T$, and we lose otherwise. If we do not stop when an event occurs and no additional events occur by time $T$, then we lose. Also, if no events occur by time $T$, then we lose. Consider the strategy that stops at the first event to occur after some fixed time $s,\ 0\leq s \leq T$.
+
+
+###(a) Using this strategy, what is the probability of winning?
+$$\begin{aligned}
+P(win)&=P(N(T)-N(s)=1)\\
+&=\frac{[\lambda(T-s)]^1}{1!}e^{-\lambda(T-s)}\\
+&=\lambda(T-s)e^{-\lambda(T-s)}
+\end{aligned}$$
+
+
+###(b) What value of $s$ maximizes the probability of winning?\
+$$\frac{\mathrm{d}}{\mathrm{d}s} \bigg[ \lambda(T-s)e^{-\lambda(T-s)} \bigg] =-\lambda e^{-\lambda(T-s)}+\lambda(T-s)\lambda e^{-\lambda(T-s)}\overset{\mathrm{set}}{=}0$$
+By setting $k=-\lambda(T-s)$,\
+$$-\lambda e^k-k\lambda e^k=0$$
+$$k=-\lambda(T-s)=-1$$
+$$\lambda(T-s)=1$$
+$$s^*=T-\frac{1}{\lambda}$$
+
+###(c) Show that one’s probability of winning when using the preceding strategy with the value of $s$ specified in part (b) is $\frac{1}{e}$
+
+Given $s=1$, according to (a) $P(win)=1e^{-1}=\frac{1}{e}$ 
+
+##1. Problem 5.61
+A system has a random number of flaws that we will suppose is Poisson distributed with mean $c$. Each of these flaws will, independently, cause the system to fail at a random time having distribution $G$. When a system failure occurs, suppose that the flaw causing the failure is immediately located and fixed.
+
+
+###(a) What is the distribution of the number of failures by time $t$?
+
+Conditioning on the number of flaws in the system, we get\
+$$\begin{aligned}
+P[failures\ by\ time\ t=k]&=P[flaws\ detected\ by\ time\ t=k]\\
+&=\sum\limits_{i=0}^\infty P[flaws\ detected\ by\ time\ t=k|total\ flaws\ =i]\times P[total\ flaws\ =i]
+\end{aligned}$$
+While
+$$P[total\ flaws\ =i]=e^{-c}\frac{c^i}{i!}$$
+$$P[flaws\ detected\ by\ time\ t=k|total\ flaws\ =i]= \left\{\begin{array}{ll}
+0 & \mbox{if $i<k$} \\
+\frac{i!}{k!(i-k)!}[G(t)]^k[1-G(t)]^{i-k}, & \mbox{$i\geq k$}
+\end{array}\right.$$
+Then, we have
+$$\begin{aligned}
+P[failures\ by\ time\ t=k]&=\sum\limits_{i=k}^\infty e^{-c}\frac{c^i}{i!}\frac{i!}{k!(i-k)!}[G(t)]^k[1-G(t)]^{i-k}\\
+&=e^{-c}\frac{[cG(t)]^k}{k!}\sum\limits_{i=k}^\infty \frac{[c(1-G(t))]^{i-k}}{(i-k)!}\\
+&=e^{-c}\frac{[cG(t)]^k}{k!}\sum\limits_{j=0}^\infty \frac{[c(1-G(t))]^j}{j!}\\
+&=e^{-c}\frac{[cG(t)]^k}{k!}e^{c-cG(t)}\\
+&=e^{-cG(t)}\frac{[cG(t)]^k}{k!}\sim Poisson(cG(t))
+\end{aligned}$$
+
+
+###(b) What is the distribution of the number of flaws that remain in the system at time $t$?
+Similar to (a), we can derive that
+$$P[flaws\ undetected\ by\ time\ t=k]\sim Poisson(1-cG(t))$$
+
+
+###(c) Are the random variables in parts (a) and (b) dependent or independent?
+\
+Since we can first classify flaws into detected or undetected, with probability $G(t)$ and $1-G(t)$ respectively, the two random variables are thereby independent.
+
+
+##1. Problem 5.74
+The number of missing items in a certain location, call it $X$, is a Poisson random variable with mean $\lambda$.When searching the location, each item will independently be found after an exponentially distributed time with rate $\mu$. A reward of $R$ is received for each item found, and a searching cost of $C$ per unit of search time is incurred. Suppose that you search for a fixed time $t$ and then stop.
+
+
+###(a) Find your total expected return.
+The probability of each item (independently) being found is $1-e^{\mu t}$.\
+Thus, the expected return will be
+$$R\times\lambda(1-e^{\mu t})-C\times t$$
+
+
+###(b) Find the value of $t$ that maximizes the total expected return.
+
+$$\frac{\mathrm{d}}{\mathrm{d}t}\bigg[R\times\lambda(1-e^{\mu t})-C\times t\bigg]=R\mu\lambda e^{-\mu t}-C\overset{\mathrm{set}}{=}0$$
+$$e^{-\mu t}=\frac{c}{R\mu\lambda}$$
+$$t^*=\frac{\ln R\mu\lambda-\ln C}{\mu}$$
+
+
+###(c) The policy of searching for a fixed time is a static policy. Would a dynamic policy, which allows the decision as to whether to stop at each time $t$, depend on the number already found by $t$ be beneficial?
+Independently, each of the number of items will be counted with probability $1-e^{-\mu t}$ or not be counted with probability $e^{-\mu t}$, therefore the number of items not found yet by time $t$ is independent of the number found. Thus, there is no guarantee that the dynamic policy works better.

@@ -1,0 +1,66 @@
+---
+title: "Stochastic Processes Assignment 6"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/10/30"
+output: pdf_document
+---
+
+
+##1. Problem 5.24
+There are two servers available to process $n$ jobs. Initially, each server begins work on a job. Whenever a server completes work on a job, that job leaves the system and the server begins processing a new job (provided there are still jobs waiting to be processed). Let $T$ denote the time until all jobs have been processed.If the time that it takes server $i$ to process a job is exponentially distributed with rate $\mu_i,\ i=1,2$, find $E[T]$ and $Var(T)$.\
+\
+Let $T_i$ denote the time between the $(i-1)$th and $i$th job completion. The $T_i$s are independent, while $T_i\sim exp(\mu_1+\mu_2)$. Except for $T_n$, where $T_n\sim exp(\mu_2)$ if less time is spent at server 1 (i.e. with probability $\frac{\mu_1}{\mu_1+\mu_2}$) or $T_n\sim exp(\mu_1)$ if less time is spent at server 2 (i.e. with probability $\frac{\mu_2}{\mu_1+\mu_2}$).\
+$$\begin{aligned}
+E[T]&=\sum\limits_{i=1}^{n-1}E[T_i]+E[T_n]\\
+&=(n-1)\times\frac{1}{\mu_1+\mu_2}+\frac{1}{\mu_2}\times\frac{\mu_1}{\mu_1+\mu_2}+\frac{1}{\mu_1}\times\frac{\mu_2}{\mu_1+\mu_2}
+\end{aligned}$$
+Then, $Var(T_i)=\frac{1}{(\mu_1+\mu_2)^2}$. Except for $T_n$ again.\
+$$\begin{aligned}
+Var(T_n)&=E[T_n^2]-(E[T_n])^2\\
+&=[(\frac{1}{\mu_2})^2+\frac{1}{\mu_2^2}]\times\frac{\mu_1}{\mu_1+\mu_2}+[(\frac{1}{\mu_1})^2+\frac{1}{\mu_1^2}]\times\frac{\mu_2}{\mu_1+\mu_2}-(\frac{1}{\mu_2}\times\frac{\mu_1}{\mu_1+\mu_2}+\frac{1}{\mu_1}\times\frac{\mu_2}{\mu_1+\mu_2})^2
+\end{aligned}$$
+As a result,\
+$$Var[T]=(n-1)\frac{1}{(\mu_1+\mu_2)^2}+[(\frac{1}{\mu_2})^2+\frac{1}{\mu_2^2}]\times\frac{\mu_1}{\mu_1+\mu_2}+[(\frac{1}{\mu_1})^2+\frac{1}{\mu_1^2}]\times\frac{\mu_2}{\mu_1+\mu_2}-(\frac{1}{\mu_2}\times\frac{\mu_1}{\mu_1+\mu_2}+\frac{1}{\mu_1}\times\frac{\mu_2}{\mu_1+\mu_2})^2$$
+\
+\ 
+
+##2. Problem 5.34
+Two individuals, $A$ and $B$, both require kidney transplants. If she does not receive a new kidney, then A will die after an exponential time with rate $\mu_A$, and $B$ after an exponential time with rate $\mu_B$. New kidneys arrive in accordance with a Poisson process having rate $\lambda$. It has been decided that the first kidney will go to $A$ (or to $B$ if $B$ is alive and $A$ is not at that time) and the next one to $B$ (if still living).\
+\ 
+
+###(a) What is the probability that $A$ obtains a new kidney?
+\
+Let $T_A$ denote the time $A$ dies of failing to receive a kidney transplant.\
+Let $T_B$ denote the time $B$ dies of failing to receive a kidney transplant.\
+Let $T_1$ denote the exact time where the first kidney arrives.\
+Let $T_2$ denote the time between the arrival of the first and second kidney.\
+\
+Then we have\
+$P(A\ obtains\ a\ new\ kidney)=P(T_A>T_1)=\frac{\lambda}{\lambda+\mu_A}$\
+\ 
+
+###(b) What is the probability that $B$ obtains a new kidney?
+$$\begin{aligned}
+&P(B\ obtains\ a\ new\ kidney)\\
+&\ \ =P(B\ obtains\ a\ new\ kidney|T_1=min(T_1,T_A,T_B))\times P(T_1=min(T_1,T_A,T_B))\\
+&\ \ \ \ +P(B\ obtains\ a\ new\ kidney|T_A=min(T_1,T_A,T_B))\times P(T_A=min(T_1,T_A,T_B))\\
+&\ \ \ \ +P(B\ obtains\ a\ new\ kidney|T_B=min(T_1,T_A,T_B))\times P(T_B=min(T_1,T_A,T_B))\\
+&\ \ =P(T_2<T_B)P(T_1=min(T_1,T_A,T_B))+P(T_1<T_B)P(T_A=min(T_1,T_A,T_B))+0\\
+&\ \ =\frac{\lambda}{\lambda+\mu_B}\times\frac{\lambda}{\lambda+\mu_A+\mu_B}+\frac{\lambda}{\lambda+\mu_B}\times\frac{\mu_A}{\lambda+\mu_A+\mu_B}\\
+&\ \ =\frac{\lambda}{\lambda+\mu_B}\times\frac{\lambda+\mu_A}{\lambda+\mu_A+\mu_B}
+\end{aligned}$$
+\
+\ 
+
+##3.
+$X\sim exp(\lambda)$ and $Y\sim exp(\mu)$ are independent. Show that $E[Y|Y<X]=\frac{1}{\lambda+\mu}$.\
+\
+Rewrite $Y$ as $min(X,Y)+(Y-min(X,Y))^+$, then, using the proposition below,\
+$$\begin{aligned}
+E[Y|Y<X]&=E[min(X,Y)+(Y-min(X,Y))^+|Y<X]\\
+&=E[min(X,Y)|Y<X]+E[(Y-min(X,Y))^+|Y<X]\\
+&=E[min(X,Y)]+0\\
+&=\frac{1}{\lambda+\mu}
+\end{aligned}$$
+\
+**Proposition** If $Y_1,Y_2,\cdots Y_n$ are independent exponential random variables with respective rates $\mu_1,\mu_2,\cdots \mu_n$, then $min_i\ Y_i$ is exponential with rate $\sum\limits_{i=1}^n \mu_i$ and that $min_i\ Y_i$ and the rank order of the variables $Y_1,Y_2,\cdots Y_n$ are independent.
