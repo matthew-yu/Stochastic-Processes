@@ -1,0 +1,112 @@
+---
+title: "Stochastic Processes Assignment 5"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/10/23"
+output: pdf_document
+---
+
+
+##1. Problem 5.4
+Consider a post office with two clerks. Three people, A, B, and C, enter simultaneously. A and B go directly to the clerks, and C waits until either A or B leaves before he begins service. What is the probability that A is still in the post office after the other two have left when\
+\
+**(a) the service time for each clerk is exactly (nonrandom) ten minutes?**\
+0. As there are only two clerks, such event is not going to happen.\
+\
+**(b) the service times are $i$ with probability $\frac{1}{3}, i=1,2,3$?**\
+Let $T_j$ denote the service time of client $j$.\
+The probability of interest is therefore $P(T_A>T_B+T_C)$\
+$$\begin{aligned}
+P(T_A>T_B+T_C)&=P(T_A>T_B+T_C|T_B+T_C=2)P(T_B+T_C=2)\\
+&\ \ \ +P(T_A>T_B+T_C|T_B+T_C=3)P(T_B+T_C=3)\\
+&\ \ \ + \cdots +P(T_A>T_B+T_C|T_B+T_C=6)P(T_B+T_C=6)\\
+&=P(T_A>T_B+T_C|T_B+T_C=2)P(T_B+T_C=2)\\
+&=\frac{1}{3}\times \frac{1}{3}\times \frac{1}{3}=\frac{1}{27}
+\end{aligned}$$
+Since the only possible case is that $T_A=3,\ T_B=T_C=1$\
+\
+**(c) the service times are exponential with mean $\frac{1}{\mu}$?**\
+Following on the notations in **(b)**, $T_A,\ T_B,\ T_C$ are i.i.d exponential random variables with mean $\frac{1}{\mu}$\
+By the property of exponential distribution, $T_B+T_C\sim Gamma(2,\frac{1}{\mu})$\
+Then, $f_{B+C}(t)=\frac{1!e^{-\mu t}(\mu t)}{1!}$\
+$$P(T_A>T_B+T_C)=\int P(T_A>t) \mu^2te^{-\mu t}\mathrm{d}t$$
+While $P(T_A>t)=1-(1-e^{-\mu t})=e^{-\mu t}$\
+$$\begin{aligned}
+P(T_A>T_B+T_C)&=\int_0^\infty \mu^2te^{-2\mu t}\mathrm{d}t\\
+&=\mu^2\frac{te^{-2\mu t}}{-2\mu} \bigg|_0^\infty-\frac{\mu^2}{-2\mu}\times \int_0^\infty e^{-2\mu t}\mathrm{d}t\\
+&=\frac{\mu}{2} \times \frac{e^{-2\mu t}}{-2\mu} \bigg|_0^\infty=\frac{1}{4}
+\end{aligned}$$\
+\ 
+
+##2. Problem 5.20
+Consider a two-server system in which a customer is served first by server 1, then by server 2, and then departs. The service times at server i are exponential random variables with rates $\mu_i, i=1,2$. When you arrive, you find server 1 free and two customers at server 2—customer A in service and customer B waiting in line.\
+\
+**(a) Find $P_A$, the probability that $A$ is still in service when you mover over to server 2.**\
+\
+Let $S_i(k),\ k=m,A,B$ denote server $i,\ i=1,2$ service time of me, A and B, respectively\
+Conditioning on $S_2(A)$,\
+$$\begin{aligned}
+P(S_1(m)<S_2(A))&=\int_0^\infty P(S_1(m)<S_2(A)|S_1(m)=m)\mu_1 e^{-\mu_1 m} \mathrm{d}m\\
+&=\int_0^\infty P(m<S_2(A))\mu e^{-\mu m} \mathrm{d}m\\
+&=\int_0^\infty e{-\mu_2}\mu_1 e^{-\mu_1 m} \mathrm{d}m=\frac{\mu_1}{\mu_1+\mu_2}
+\end{aligned}$$\ 
+\
+**(b) Find $P_B$, the probability that $B$ is still in service when you mover over to server 2.**\
+\
+$$\begin{aligned}
+P_B&=1-P[both\ A\ and\ B\ served\ before\ me]\\
+&=1-\bigg(\frac{\mu_1}{\mu_1+\mu_2}\bigg)^2
+\end{aligned}$$\
+
+**(c) Find $E[T]$, where $T$ is the time you spend in the system.**\
+\
+$E[T]=E[S_1]+E[S_2]+E[W_A]+E[W_B]$\
+While\
+$$\begin{aligned}
+&E[S_1]=\frac{1}{\mu_1}\\
+&E[S_2]=\frac{1}{\mu_2}\\
+&E[W_A]=\frac{1}{\mu_1}\times \frac{\mu_1}{\mu_1+\mu_2}\\
+&E[W_B]=\frac{1}{\mu_2}\times \bigg[1-\bigg(\frac{\mu_1}{\mu_1+\mu_2}\bigg)^2\bigg]
+\end{aligned}$$
+Therefore, \
+$$E[T]=\frac{1}{\mu_1}+\frac{1}{\mu_2}+\frac{1}{\mu_1}\times \frac{\mu_1}{\mu_1+\mu_2}+\frac{1}{\mu_2}\times \bigg[1-\bigg(\frac{\mu_1}{\mu_1+\mu_2}\bigg)^2\bigg] $$
+\
+\ 
+
+##3. Problem 5.21
+In a certain system, a customermust first be served by server 1 and then by server 2. The service times at server $i$ are exponential with rate $\mu_i, i=1,2$. An arrival finding server 1 busy waits in line for that server. Upon completion of service at server 1, a customer either enters service with server 2 if that server is free or else remains with server 1 (blocking any other customer from entering service) until server 2 is free. Customers depart the system after being served by server 2. Suppose that when you arrive there is one customer in the system and that customer is being served by server 1. What is the expected total time you spend in the system?\
+\
+$$E[time]=E[time\ waiting\ at\ 1]+\frac{1}{\mu_1}+E[time\ waiting\ at\ 2]+\frac{1}{\mu_2}$$\
+While\
+$E[time\ waiting\ at\ 1]=\frac{1}{\mu_1}$\
+Conditioning on whether the customer waits for server 2,\
+$E[time\ waiting\ at\ 2]+\frac{1}{\mu_2}\times \frac{\mu_1}{\mu_1+\mu_2}$\
+Therefore,\
+$$E[time]=\frac{2}{\mu_1}+\frac{2}{\mu_2}\times \bigg(1+\frac{\mu_1}{\mu_1+\mu_2}\bigg) $$
+\ 
+
+##4. Problem 5.28
+Consider $n$ with components with independent lifetimes, which are such that component $i$ functions for an exponential time with rate $\lambda_i$. Suppose that all components are initially in use and remain so until they fail.\
+\
+**(a) Find the probability that component 1 is the second component to fail.**\
+\
+Let $C_i$ denote component $i$\
+For $i\neq1$,\
+$$\begin{aligned}
+P(C_1\ is\ the\ 2nd\ component\ to\ fail)&= P(C_i\ fails first)P(C_1\ fails\ before\ the\ rest\ does)\\
+&=\frac{\lambda_i}{\sum\limits_{j=1}^n \lambda_j}\times \frac{\lambda_1}{\sum\limits_{j\neq1} \lambda_j}
+\end{aligned}$$\
+Therefore, in general\
+$$P(C_1\ is\ the\ second\ component\ to\ fail)=\sum\limits_{i\neq1}\frac{\lambda_i}{\sum\limits_{j=1}^n \lambda_j}\times \frac{\lambda_1}{\sum\limits_{j\neq1} \lambda_j} $$
+
+
+**(b) Find the expected time of the second failure.**\
+\
+$$\begin{aligned}
+E[Time\ of\ 2nd\ failure]&=E[Time\ to\ 1st\ failure]\\
+&\ \ \ +\sum\limits_{j=1}^nE[Time\ to\ next\ failure|C_i\ is\ the\ 1st\ to\ fail]P(C_i\ is\ the\ 1st\ to\ fail)
+\end{aligned}$$\
+Where\
+$E[Time\ to\ 1st\ failure]=\frac{1}{\sum\limits_{j=1}^n \lambda_j}$\
+$P(C_i\ is\ the\ 1st\ to\ fail)=\frac{\lambda_i}{\sum\limits_{j=1}^n\lambda_j}$\
+Therefore,\
+$$E[Time\ of\ 2nd\ failure]=\frac{1}{\sum\limits_{j=1}^n \lambda_j}+\sum\limits_{i=1}^n\frac{1}{\sum\limits_{j\neq i}\lambda_j}\times \frac{\lambda_i}{\sum\limits_{j=1}^n\lambda_j} $$

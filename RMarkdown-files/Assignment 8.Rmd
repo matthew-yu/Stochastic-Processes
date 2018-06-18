@@ -1,0 +1,212 @@
+---
+title: "Stochastic Processes Assignment 8"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/12/5"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##1.
+Let $X_n$ denote the quality of the $n$th item produced by a production system, with $X_n=0$ meaning "good" and $X_n=1$ meaning "defective". Suppose that $\{X_n\}$ evolves as a Markov chain with transition probability matrix
+$$\textbf{P}=
+\left[
+\begin{array}{clr}
+0.97 & 0.03\\
+0.04 & 0.96
+\end{array}
+\right] \ where\ P_{00}=0.97, \cdots$$
+and the initial distribution $\alpha_0=0.7$ and $\alpha_1=0.3$, where $\alpha_i=P\{X_0=i\}$ for $i=0,1$\
+
+
+###(a) Compute $P^{(0)}$, $P^{(1)}$ and $P^{(2)}$
+
+By definition, 
+$$P^{(0)}=
+\left[
+\begin{array}{clr}
+1 & 0\\
+0 & 1
+\end{array}
+\right]$$
+\
+$$P^{(1)}=
+\left[
+\begin{array}{clr}
+0.97 & 0.03\\
+0.04 & 0.96
+\end{array}
+\right]$$
+\
+
+```{r}
+library(expm)
+P <- matrix(c(0.97,0.04,0.03,0.96),nrow=2)
+P %^% 2
+```
+$$P^{(2)}=
+\left[
+\begin{array}{clr}
+0.9421 & 0.0579\\
+0.0772 & 0.9228
+\end{array}
+\right]$$
+
+###(b) Determine the probability that the $2^{nd}$ item is defective given that the $0^{th}$ item is defective.
+
+The probability is the bottom right entry of $P^{(2)}$, i.e. 0.9228\
+
+
+###(c) Determine the probability that the $2^{nd}$ item is defective given that the $1^{st}$ item is defective.
+
+The probability is the bottom right entry of $P^{(1)}$, i.e. 0.96\
+
+
+###(d) Determine the (unconditional) probability that the $2^{nd}$ is defective.
+
+```{r}
+initial <- matrix(c(0.7,0.3),nrow=1)
+initial%*%(P %^% 2)
+```
+The probability that the 2nd item is defective is 0.31737\
+
+
+###(e) Determine the probability that items 0 and 1 are good and that item 2 is defective and the probability that items 0 and 2 are good.
+
+The first probability is equivalent to $P_{01}$ for the process is independent to past states. Therefore the probability is 0.03.\
+\
+The latter would be $P^{(2)}_{00}=0.9421$
+
+
+##2. Problem 4.20
+A transition probability matrix $\textbf{P}$ is said to be doubly stochastic if the sum over each column equals one; that is,
+$$\sum\limits_i P_{ij}=1,\ for\ all\ j$$
+If such a chain is irreducible and aperiodic and consists of $M+1$ states $0,1,\dots,M$ show that the long-run proportions are given by
+$$\pi_j=\frac{1}{M+1},\ j=0,1\dots,M$$
+\
+\
+If $\sum\limits_{i=0}^m P_{ij}=1$ for all $j$, then $r_j=\frac{1}{M+1}$ satisfies $r_{ij}=\sum\limits_{i=0}^m r_iP_{ij},\ \sum\limits_{0}^m r_j=1$\
+Hence, by uniqueness these are the limiting probabilities.
+
+##2. Problem 4.23
+In a good weather year the number of storms is Poisson distributed with mean 1; in a bad year it is Poisson distributed with mean 3. Suppose that any year’s weather conditions depends on past years only through the previous year’s condition. Suppose that a good year is equally likely to be followed by either a good or a bad year, and that a bad year is twice as likely to be followed by a bad year as by a good year. Suppose that last year - call it year 0 - was a good year.\
+
+
+###(a) Find the expected total number of storms in the next two years (that is, in years 1 and 2).
+
+Let 0 be a good year, 1 be a bad. The Markov chain transition probability matrix is then
+$$P_w=
+\left[
+\begin{array}{clr}
+\frac{1}{2} & \frac{1}{2}\\
+\frac{1}{3} & \frac{2}{3}
+\end{array}
+\right]$$
+and,
+```{r}
+P_w <- matrix(c(1/2,1/3,1/2,2/3),nrow=2)
+P_w %^% 2
+```
+
+$$P_w^2=
+\left[
+\begin{array}{clr}
+0.417 & 0.583\\
+0.389 & 0.611
+\end{array}
+\right]$$
+
+The expected number of storms in year 1 is $1\times\frac{1}{2}+3\times\frac{1}{2}=2$\
+
+The expected number of storms in year 2 is
+$1\times 0.417+3\times 0.583=2.166$\
+
+
+###(b) Find the probability there are no storms in year 3.
+
+```{r}
+P_w %^% 3
+```
+
+\
+$P^{(3)}_{00}=0.4028,\ P^{(3)}_{01}=0.5972$\
+Conditioning on the state at year 3, the probability that there are no storms in year 3 is $0.4028\times e^{-1}+0.5972\times e^{-3}=0.1779$\
+
+
+###(c) Find the long-run average number of storms per year.
+
+$$\left\{
+\begin{array}{ll}
+\pi_0=\pi_0\times \frac{1}{2}+\pi_1\times \frac{1}{3}\\
+\pi_0+\pi_1=1
+\end{array} \right.$$
+
+By solving this,
+$$\pi_0=\frac{2}{5}, \pi_1=\frac{3}{5}$$
+The long-run average number of storms per year is $1\times \frac{2}{5}+3\times \frac{3}{5}=\frac{11}{5}$\
+
+
+##2. Problem 4.25
+Each morning an individual leaves his house and goes for a run. He is equally likely to leave either from his front or back door. Upon leaving the house, he chooses a pair of running shoes (or goes running barefoot if there are no shoes at the door from which he departed). On his return he is equally likely to enter, and leave his running shoes, either by the front or back door. If he owns a total of $k$ pairs of running shoes, what proportion of the time does he run barefooted?\
+\
+Let $X_n$ denote the number of pairs of shoes at the door the runner departs from at the beginning of day $n$, $X_n$ is a Markov chain which has transition probabilities
+$$P_{i,i}=\frac{1}{4},\ \ 0<i<k$$
+$$P_{i,i-1}=\frac{1}{4},\ \ 0<i<k$$
+$$P_{i,k-i}=\frac{1}{4},\ \ 0<i<k$$
+$$P_{i,k-i+1}=\frac{1}{4},\ \ 0<i<k$$
+
+While the column sums are also 1, the long-run proportions are equal. Thus, the proportion of the time the runner runs barefooted is $\frac{1}{k+1}$\
+
+
+##2. Problem 4.29
+An organization has $N$ employees where $N$ is a large number. Each employee
+has one of three possible job classifications and changes classifications (independently) according to a Markov chain with transition probabilities
+$$\left[
+\begin{array}{clr}
+0.7 & 0.2 & 0.1\\
+0.2 & 0.6 & 0.2\\
+0.1 & 0.4 & 0.5
+\end{array}
+\right]$$
+What percentage of employees are in each classification?\
+\
+$$\left\{
+\begin{array}{ll}
+\Pi_1=0.7\Pi_1+0.2\Pi_2+0.1\Pi_3\\
+\Pi_2=0.2\Pi_1+0.6\Pi_2+0.4\Pi_3\\
+\Pi_1+\Pi_2+\Pi_3=1
+\end{array} \right.$$
+\
+By solving this, we get $\Pi_1=\frac{6}{17},\ \Pi_2=\frac{7}{17},\ \Pi_3=\frac{4}{17}$. Hence, the percentage of employees in each classification is approximately 35.3%, 41.2%, and 23.5%, respectively.
+
+
+
+##3.
+Classify the states of the Markov chain with transition probability matrix
+$$ \textbf{P}=
+\left[
+\begin{array}{@{}*{8}{c}@{}}
+0 & 0.1 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0\\
+0.1 & 0.2 & 0 & 0 & 0.6 & 0 & 0 & 0.1\\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0.2 & 0 & 0.8\\
+0 & 0.3 & 0 & 0 & 0 & 0.4 & 0.1 & 0.2\\
+0 & 0 & 0 & 0 & 0 & 0.6 & 0 & 0.4
+\end{array}
+\right]$$\
+\
+![Diagram of states and transitions](D:\States.jpg)\
+\
+Class {0,1} is not closed\
+Class {2} is closed\
+Class {3} is closed\
+Class {4} is Closed\
+Class {5,7} is not closed\
+Class {6} is closed\ 
+
+State 0,1,6 is transient\
+State 2,3,4,5,7 is recurrent

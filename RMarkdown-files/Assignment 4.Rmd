@@ -1,0 +1,64 @@
+---
+title: "Stochastic Processes Assignment 4"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/10/16"
+output: pdf_document
+---
+
+
+##1. Problem 3.49
+A and B play a series of games with A winning each game with probability $p$. The overall winner is the first player to have won two more games than the other.\ 
+
+(a) Find the probability that A is the overall winner.\
+(b) Find the expected number of games played.\ 
+
+###(a)
+Let $A$ denote the event A wins afterall.\
+Let $T$ denote the number of games A wins within the first 2 games.\
+Then, conditioning $A$ on $T$ we get
+$$\begin{aligned}
+P(A)&=P(A|T=0)P(T=0)+P(A|T=1)P(T=1)+P(A|T=2)P(T=2)\\
+&=0+P(A)\times 2p(1-p)+p^2
+\end{aligned}$$\
+After arranging,$1-2p(1-p)\times P(A)=p^2$\
+$$P(A)=\frac{p^2}{1-2p(1-p)}$$\ 
+
+###(b)
+Let $X$ denote total games played.\
+Applying notions from **(a)**, \
+$$\begin{aligned}
+E(X)&=E(X|T=0)P(T=0)+E(X|T=1)P(T=1)+E(X|T=2)P(T=2)\\
+&=2(1-p)^2+[2+E(X)]\times 2p(1-p)+2p^2\\
+&=2+E(X)\times 2p(1-p)
+\end{aligned}$$\
+Then,\
+$$E(X)=\frac{2}{1-2p(1-p)}$$\ 
+
+
+##2. Problem 3.54
+A coin is randomly selected from a group of ten coins, that $n$th coin having a probability of $n/10$ of coming up heads. The coin is then repeatedly flipped until a head appears. Let $N$ denote the number of flip necessary. What is the probability distribution of $N$? Is $N$ a geometric random variable? When would $N$ be a geometric random variable; that is, what would have to be done differently? \ 
+
+Since $P(N=j|n=x)= \frac{x}{10}\times (1-\frac{x}{10})^{j-1}$\
+$$P(N=j)=\frac{1}{10}\times\frac{n}{10}\times \sum\limits_{n=1}^{10}(1-\frac{n}{10})^{j-1}$$\
+\
+Therefore N is not a geometric variable for the pmf doesn't necessarily match. However if the coin is sampled with replacement after each flip, N will follow geometric distribution.\ 
+
+
+##3. Problem 3.62
+A, B and C are evenly matched tennis players. Initially A and B play a set, and the winner then plays C. This continues, with the winner always playing the waiting player, until one of the players has won two sets in a row. That player is the declared the overall winner. Find the probability that A is the overall winner.\ 
+\
+\
+$W_k$: The event of player k winning a game.\
+$L_k$: The event of player k losing a game.\
+$P(k)$: Player k wins overall.\
+Then, for player A\
+$$\begin{aligned}
+P(A)&=\frac{1}{2}P(A|W_A)+\frac{1}{2}P(A|L_A)\\
+&=\frac{1}{2}\times (\frac{1}{2}+\frac{1}{2}P(A|W_AL_A))+\frac{1}{2}\times \frac{1}{2}P(C)\\
+&=\frac{1}{4}+\frac{1}{4}\times \frac{1}{2}P(C)+\frac{1}{4}P(C)\\
+&=\frac{1}{4}+\frac{3}{8}\times P(C)
+\end{aligned}$$\
+Since the case of B is similar to A, $P(B)=\frac{1}{4}+\frac{3}{8}\times P(C)$\
+While $P(A)+P(B)+P(C)=1$, \
+$$\frac{1}{4}+\frac{3}{8}\times P(C)+\frac{1}{4}+\frac{3}{8}\times P(C)+P(C)=1$$\
+$P(C)=\frac{2}{7}\ , P(A)=P(B)=\frac{5}{14}$

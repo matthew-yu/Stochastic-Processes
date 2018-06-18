@@ -1,0 +1,130 @@
+---
+title: "Stochastic Processes Assignment 9"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/12/22"
+output: pdf_document
+---
+
+
+##1. Problem 4.45
+Consider an irreducible finite Markov chain with states $0,1,\dots,N$.
+
+
+###(a) Starting in state $i$, what is the probability the process will ever visit state $j$? Explain!
+
+As the state space is finite, all state spaces communicate with one another, thus are all recurrent. That makes the probability 1.\ 
+
+
+###(b) Let $x_i=P\{visit\ state\ N\ before\ state\ 0|\ start\ in\ i\}$. Compute a set of linear equations that the $x_i$ satisfy, $i=0,1,\dots,N$.
+
+Conditioning on the 1st move, we have
+$$\begin{aligned}
+x_0&=0\\
+x_N&=1\\
+x_i&=\sum\limits_{j=1}^{N-1} P_{ij}x_j+P_{iN}\ \ for\ i=1,\dots,N-1
+\end{aligned}$$
+
+###(c) If $\sum_jjP_{ij}=i$ for $i=1,\dots N-1$, show that $x_i=\frac{i}{N}$ is a solution to the equations in part (b).
+
+First, $x_i=\frac{i}{N}$ works for $x_0$ and $x_N$.\
+Then, 
+$$\begin{aligned}
+\sum\limits_{j=1}^{N-1} P_{ij}x_j+P_{iN}&=\sum\limits_{j=1}^{N-1} P_{ij}x_j+P_{iN}\times x_0+P_{i0}\times x_0\\
+&=\sum\limits_{j=0}^{N} P_{ij}x_j
+\end{aligned}$$
+If $x_i=\frac{i}{N}$,
+$$\sum\limits_{j=0}^{N} P_{ij}x_j=\sum\limits_{j=0}^{N} P_{ij}\times\frac{j}{N}=\frac{i}{N}$$
+Thus, $x_i=\frac{i}{N}$ works as a solution.
+
+
+##1. Problem 4.57
+A particle moves among $n+1$ vertices that are situated on a circle in the following manner. At each step it moves one step either in the clockwise direction with probability $p$ or the counterclockwise direction with probability $q=1-p$. Starting at a specified state, call it state 0, let $T$ be the time of the first return to state 0. Find the probability that all states have been visited by time $T$.
+
+Let $C$ denote the event the quest is completed.\
+Then, by conditioning on the first step
+$$\begin{aligned}
+P(C)&=P(C|moves\ clockwise)\times p+P(C|moves\ counterclockwise)\times q\\
+&=\frac{1-\frac{q}{p}}{1-(\frac{q}{p})^n}\times p+\frac{1-\frac{p}{q}}{1-(\frac{p}{q})^n}\times q
+\end{aligned}$$
+
+
+
+##1. Problem 4.58
+In the gambler’s ruin problem of Section 4.5.1, suppose the gambler’s fortune is presently $i$, and suppose that we know that the gambler’s fortune will eventually reach $N$ (before it goes to 0).Given this information, show that the probability he wins the next gamble is
+$$\left\{ \begin{array}{llll}
+\frac{p[1-(q/p)^{i+1}]}{1-(q/p)^i}, & \mbox{if $p\neq \frac{1}{2}$} \\
+\frac{i+1}{2i},      & \mbox{if $p=\frac{1}{2}$}
+\end{array}\right.$$\
+
+
+$$P\{X_{n+1}=i+1|X_n=i, \lim_{m\to\infty}x_m=N\}=\frac{P\{X_{n+1}=i+1, \lim_{m\to\infty}x_m=N|X_n=i\}}{P\{\lim_{m\to\infty}x_m=N|x_n=i\}}$$
+$$P\{X_{n+1}=i+1|x_n=i\}\times \frac{P\{\lim_{m\to\infty}x_m=N|x_n=i,x_{n+1}=i+1\}}{P\{lim_{m\to\infty}=N|X_n=1\}}=\frac{p^Pi+1}{P_i}$$
+Thus, 
+$$\text{Probability of winning next game}=\left\{ \begin{array}{llll}
+\frac{p[1-(q/p)^{i+1}]}{1-(q/p)^i}, & \mbox{if $p\neq \frac{1}{2}$} \\
+\frac{i+1}{2i},      & \mbox{if $p=\frac{1}{2}$}
+\end{array}\right.$$\
+
+
+##1. Problem 4.59
+For the gambler’s ruin model of Section 4.5.1, let $M_i$ denote the mean number of games that must be played until the gambler either goes broke or reaches a fortune of $N$, given that he starts with $i,\ i=0,1,\dots,N$. Show that $M_i$ satisfies
+$$M_0=M_N=0;\ \ M_i=1+pM_{i+1}+qM_{i-1},\ \ i=1,\dots,N-1$$
+Solve these equations to obtain
+$$M_i=\left\{ \begin{array}{llll}
+i(N-i), & \mbox{if $p=\frac{1}{2}$} \\
+\frac{i}{q-p}-\frac{N}{q-p}\times \frac{1-(q/p)^i}{1-(q/p)^N},      & \mbox{if $p\neq\frac{1}{2}$}
+\end{array}\right.$$\
+
+\
+\
+\
+\
+\
+\
+\
+\
+
+
+
+##1. Problem 4.60
+The following is the transition probability matrix of a Markov chain with states 1, 2, 3, 4
+$$\textbf{P}=
+\left(
+\begin{array}{cllr}
+.4 & .3 & .2 & .1\\
+.2 & .2 & .2 & .4\\
+.25 & .25 & .5 & 0\\
+.2 & .1 & .4 & .3
+\end{array}
+\right) \ if\ X_0=1$$
+
+
+
+###(a) find the probability that state 3 is entered before state 4
+
+Let $p_i$ denote the probability that starting from state $i$, state 3 is entered before state 4.\
+Then, we have
+$$\left\{\begin{array}{llll}
+p_3=1\\
+p_4=0\\
+p_1=0.4p_1+0.3p_2+0.2p_3+0.1p_4\\
+p_2=0.2p_1+0.2p_2+0.2p_3+0.4p_4
+\end{array}\right.$$
+By solving the equations, $p_1=\frac{11}{21}$
+
+###(b) find the mean number of transitions until either state 3 or state 4 is entered.
+
+Let $m_i$ denote the expected number of steps needed given that starting from state $i$, state 3 is entered before state 4.\
+We have
+$$\left\{\begin{array}{llll}
+m_3=0\\
+m_4=0\\
+m_1=0.4(1+m_1)+0.3(1+m_2)+0.2(1+m_3)+0.1(1+m_4)\\
+m_2=0.2(1+m_1)+0.2(1+m_2)+0.2(1+m_3)+0.4(1+m_4)
+\end{array}\right.$$
+which can be simplified to
+$$\left\{\begin{array}{ll}
+6m_1-3m_2=10\\
+8m_2-2m_1=10
+\end{array}\right.$$
+By solving the equations, $m_1=\frac{55}{21}$

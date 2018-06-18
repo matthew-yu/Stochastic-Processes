@@ -1,0 +1,183 @@
+---
+title: "Stochastic Processes Assignment 3"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/10/6"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+
+##1.
+Suppose we own a stock which is sensitive to the economy. There is a 70% chance the economy will grow next year; a 30% chance the economy will slow. If the economy grows, there is an 80% chance the stock will go up; otherwise 20% it will go down. On the other hand, if the economy slows, there is only a 30% chance the stock will go up; otherwise (1-30%) it will go down. If we know the stock went up, what is the probability that the economy grew?\ 
+\
+\
+Let $E$ denote the event the economy grows next year\
+Let $S$ denote the event the stock went up\
+Then: $P(E)=0.7,\ P(E')=0.3,\ P(S|E)=0.8,\ P(S'|E)=0.2,\ P(S|E')=0.3,\  P(S|E')=0.7$\
+
+$$P(E|S)=\frac{P(S\cap E)}{P(S)}=\frac{P(S|E)P(E)}{P(E)P(S|E)+P(E')P(S|E')}=\frac{56}{65}$$\ 
+
+
+##2.
+Suppose that $X$ and $Y$ are i.i.d. random variables following geometric distribution with parameter $p$. Show that $X+Y$ follows negative binomial distribution with parameters $n=2$ and $p$. (a) prove by using moment generating function (mgf). (b) prove **without** using moment generating function (mgf).\ 
+
+###(a)
+$M_X(t)=\frac{pe^t}{1-e^t(1-p)}$, $M_Y(t)=\frac{pe^t}{1-e^t(1-p)}$
+$$M_{X+Y}(t)=E[e^{tX+tY}]=E[e^{tX}]E[e^{tY}]=\bigg[\frac{pe^t}{1-e^t(1-p)}\bigg]^2 $$\
+While the mgf of a negative binomial distribution with parameters $(n,p)$ is $\bigg[\frac{pe^t}{1-e^t(1-p)}\bigg]^n$, by the uniqueness property of mgf,\
+$$X+Y\sim NB(2,p)$$\ 
+
+###(b)
+$$\begin{aligned}
+P(X+Y=k)&=\sum\limits_{n=1}^{k-1} P(X=n,\ Y=k-n)\\
+&=\sum\limits_{n=1}^{k-1} P(X=n)P(Y=k-n)\\
+&=\sum\limits_{n=1}^{k-1} (1-p)^{n-1}p \cdot(1-p)^{k-1-n} \cdot p\\
+&=\sum\limits_{n=1}^{k-1} (1-p)^{k-2}p^2=(k-1)p^2(1-p)^{k-2}
+\end{aligned}$$\
+Which is equivalent to $Z\sim NB(2,p)$ while $P(Z=k)=p^2(1-p)^{k-2}(k-1)$\ 
+
+
+##3.
+60 percent of the families in a certain community own their own car, 30% own their own home, and 20% own their own car and their own home. If a family is randomly chosen, what is the probability that this family owns a car or a house but not both.\ 
+\
+\
+Let C denote the event a family owns their own car.\
+Let H denote the event a family owns their own home.\
+Then, $P(C)=0.6,\ P(H)=0.3,\ P(C\cap H)=0.2$\
+$$P(C\cap H')+P(C'\cap H)=P(C\cup H)-P(C\cap H)=0.5 $$\ 
+
+
+##4.
+If $X$ is a non-negative integer value random variable, show that $E[X]=\sum\limits_{n=1}^\infty P\{X\geq n\}=\sum\limits_{n=0}^\infty P\{X>n\}$\ 
+\
+\
+Let
+$$I_n= \left\{ \begin{array}{ll}
+1 & \mbox{if $X\geq n$} \\
+0,      & \mbox{otherwise.}
+\end{array}\right.$$\
+and
+$$J_n= \left\{ \begin{array}{ll}
+1 & \mbox{if $X> n$} \\
+0,      & \mbox{otherwise.}
+\end{array}\right.$$\
+
+Then, $X=\sum\limits_{n=1}^{\infty}I_n=\sum\limits_{n=0}^{\infty}J_n$. By taking expectations\
+$$E[X]=\sum\limits_{n=1}^\infty E(I_k)=\sum\limits_{n=0}^\infty E(J_k)$$\
+The result is shown since $E[I_n]=P(X\geq n)$ and $E[J_n]=P(X>n)$\ 
+
+
+##5.
+Suppose that $X$ and $Y$ are independent binomial random variables with parameters $(n,p)$ and$(m,p)$. Argue probabilistically (no computations necessary) that $X+Y$ is binomial with parameters $(n+m,p)$.\ 
+\
+\
+Since $X$ and $Y$ are independent, intuitively the trials they represent adds up without needing to consider their interaction. That way, the sum of outcomes of $n$ and $m$ trials should be equivalent to the outcome of $n+m$ trials.\
+In addition, considering the fact that binomial RVs with same probability of success can be partitioned into separate Bernoulli trials, we can also breakdown $X$ and $Y$ and then reassemble them back to a $(n+m)$ bernoulli trial.\ 
+
+
+##6.
+A coin, having probability $p$ of coming up heads, is successively flipped until two of the most recent three flips are heads. Let $N$ denote the number of flips. (Note that if the first two flips are heads, then $N=2$.) Find $E[N]$.\ 
+\
+\
+Let $H$ and $T$ denote the outcome being heads or tails respectively.\
+Based on the first to tosses, $E[N]$ can be rewritten as
+$$\begin{aligned}
+E[N]&=2+E(N|HH)P(HH)+E(N|TT)P(TT)+E(N|TH)P(TH)+E(N|HT)P(HT)\\
+&=2+E(N|HH)p^2+E(N|TT)(1-p)^2+E(N|TH)p(1-p)+E(N|HT)p(1-p)\\
+\end{aligned}$$\ 
+\
+To proceed, each of the conditional expectations are computed, where:\
+\
+$E(N|HH)=0$ as requirements are met already in first two tosses\
+$E(N|TT)=E(N)$ for no heads appear implies a startover\
+$E(N|HT)=1+0\times P(H)+E(N|TT)P(T)=1+(1-p)E(N)$\
+$E(N|TH)=1+E(N|HH)P(H)+E(N|HT)P(T)=1+(1-p)[1+(1-p)E(N)]$\ 
+\
+\
+Then, $E(N)=2+p(1-p)[1+(1-p)E(N)]+p(1-p)[1+(1-p)+(1-p)^2E(N)]+(1-p)^2E(N)$\
+
+$$\begin{aligned}
+E(N)&=\frac{2+2p(1-p)+p(1-p)^2}{1-p(1-p)^2-p(1-p)^3-(1-p)^2}\\
+&=\frac{1+2p-p^2}{p^2(2-p)}
+\end{aligned}$$
+
+##7. Problem 3.27
+A coin that comes up heads with probability $p$ is continually flipped until the pattern T, T, H appears. (That is, you stop flipping when the most recent flip lands heads, and the two immediately proceeding it lands tails.) Let $X$ denote the number of flips made, and find $E[X]$.\ 
+\
+\
+Let $H$ and $T$ denote the outcome being heads or tails respectively.\
+By conditioning the first toss, $E(X)=[1+E(X)]p+E(X|T)(1-p)$\
+Then, as\
+$$E(X|T)=E(X|TH)p+E(X|TT)(1-p)=[2+E(X)]p+(2+\frac{1}{p})(1-p)$$\
+$E(X)$ can be rewritten as:\
+
+$$\begin{aligned}
+E(X)&=[1+E(X)]p+[2+E(X)]p(1=p)+(2+\frac{1}{p})(1-p)^2\\
+&=\frac{1}{p(1-p)^2}
+\end{aligned}$$\ 
+
+
+##8. Problem 3.26
+You have two opponents with whom you alternate play. Whenever you play A, you win with probability $p_A$; whenever you play B, you win with probability $p_B$, where $p_B>p_A$. If your objective is to minimize the expected number of games you need to play to win two in a row, should you start with A or B?\ 
+Hint: Let $E[N_i]$ denote the mean number of games needed if you initially play $i$. Derive an expression for $E[N_A]$ that involves $E[N_B]$; write down the equivalent expression for $E[N_B]$ and then subtract.\ 
+\
+\
+Let $w$ and $l$ denote the event of a win and loss, respectively.\
+Then, $E[N_A]=E[N_A|w]p_A+E[N_A|l](1-p_A)$\
+By conditioning on the next game, \
+$$\begin{aligned}
+E[N_A|w]&=E[N_A|ww]p_B+E[N_A|wl](1-p_B)\\
+&=2p_B+(2+E[N_A])(1-p_B)\\
+&=2+(1-p_B)E[N_A]
+\end{aligned}$$\
+And while $E[N_A|l]=1+E[N_A]$,\
+$$E[N_A]=\{2+(1-p_B)E[N_A]\}p_A+(1+E[N_B])(1-p_A)$$\
+following the same logic,\
+$$E[N_B]=\{2+(1-p_A)E[N_B]\}p_B+(1+E[N_A])(1-p_B)$$\
+After subtracting, \
+$$E[N_A]-E[N_B]=-(p_A-1)(p_B-1)E[N_A]-(p_A-1)(p_B-1)E[N_B]+(p_A-p_B) $$\
+$$E[N_A]-E[N_B]=\frac{(p_A-p_B)}{1+(p_A-1)(p_B-1)} $$\
+Given that $1>p_B>p_A>0$, the result is negative. Therefore, one should start by playing A.\ 
+
+
+##9. Problem 3.30
+Let $X_i, i\geq 0$ be independent and identically distributed random variables with probability mass function\ 
+$$p(j)=P\{X_i=j\},j=1,\cdots m, \sum\limits_{j=1}^{m}p(j)=1$$\
+
+Find $E[N]$, where $N=min\{n>0:X_n=X_0\}$.\ 
+\
+$$\begin{aligned}
+P(N>n)&=P\{X_1\neq X_0, X_2\neq X_0 \cdots X_n\neq X_0\}\\
+&=\sum\limits_{j=1}^{m}P\{X_1\neq X_0, X_2\neq X_0 \cdots X_n\neq X_0|X_0=j\}\cdot P(X_0=j)\\
+&=\sum\limits_{j=1}^{m}[1-p(j)]^n \cdot p(j)\\
+\end{aligned}$$\
+Then, \
+$$\begin{aligned}
+E[N]&=\sum\limits_{n=0}^{\infty}P(N>n)=\sum\limits_{n=0}^{\infty}\sum\limits_{j=1}^{m}[1-p(j)]^n \cdot p(j)\\
+&=\sum\limits_{j=1}^{m}p(j)\sum\limits_{n=0}^{\infty}[1-p(j)]^n\\
+&=\sum\limits_{j=1}^{m}p(j)\frac{1}{1-[1-p(j)]}\\
+&=\sum\limits_{j=1}^{m}p(j)\times\frac{1}{p(j)}=m\\
+\end{aligned}$$\
+Where $\sum\limits_{n=0}^{\infty}x^n=\frac{1}{1-x}$ for $x<1$\ 
+
+
+##10.
+If $R_i$ denotes the random amount that is earned in a period $i$, then $\sum\limits_{i=1}^{\infty}\beta^{i-1}R_i$, where $0<\beta <1$ is a specified constant, is called the total discounted reward with discount factor $\beta$. Let $T$ be a geometric random variable with parameter $1-\beta$ that is independent of the $R_i$s. Show that the expected total discounted reward is equal to the expected total (undiscounted) reward earned by time $T$. That is, show that\ 
+$$E\bigg[\sum\limits_{i=1}^{\infty}\beta^{i-1}R_i\bigg]=E\bigg[\sum\limits_{i=1}^{T}R_i\bigg]$$\ 
+\
+Let
+$$I_E= \left\{ \begin{array}{ll}
+1 & \mbox{if event E occurs} \\
+0,      & \mbox{otherwise.}
+\end{array}\right.$$\
+\
+Then, 
+$$\begin{aligned}
+E\bigg[\sum\limits_{i=1}^{T}R_i\bigg]&=E\bigg[\sum\limits_{i=1}^{\infty}I_{(T \geq i)} R_i\bigg]\\
+&=\sum\limits_{i=1}^{\infty}E[I_{(T \geq i)} R_i]\\
+&=\sum\limits_{i=1}^{\infty}E[I_{(T \geq i)}]E[R_i]\\
+&=\sum\limits_{i=1}^{\infty}P(T \geq i)E[R_i]\\
+&=\sum\limits_{i=1}^{\infty}\beta^{i-1}E[R_i]\\
+&=E\bigg[\sum\limits_{i=1}^{\infty}\beta^{i-1}R_i\bigg]\\
+\end{aligned}$$
