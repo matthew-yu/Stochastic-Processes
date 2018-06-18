@@ -1,0 +1,23 @@
+---
+title: "Stochastic Processes Assignment 1"
+author: "Matthew Yu     Student ID: 0553501"
+date: "2017/9/19"
+output: pdf_document
+---
+
+
+## 2. *A* and *B* are two events. Show that *__$P(A \cup B)=P(A)+P(B)-P(A \cap B)$__*.
+
+To start with,\
+$$A \cup B=(A-B) \cup (A \cap B) \cup (B-A)$$\
+
+And by the property regarding probability of events,\
+
+$$P(A \cup B)=P(A-B)+P(A \cap B)+P(B-A)$$\
+
+While $P(A-B)=P(A)-P(A \cap B)$ and $P(B-A)=P(B)-P(A \cap B)$,\
+
+$$\begin{aligned}
+P(A \cup B)&=P(A)-P(A \cap B)+P(A \cap B)+P(B)-P(A \cap B)\\
+&=P(A)+P(B)-P(A \cap B)
+\end{aligned}$$\
